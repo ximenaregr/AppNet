@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="AppNet.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:AppNet"
+    xmlns:v="clr-namespace:AppNet.Views"
+    Shell.FlyoutBehavior="Flyout">
+
+    <ShellContent
+        Title="Listar"
+        ContentTemplate="{DataTemplate v:ListadoPacientes}"
+        Route="ListadoPacientes" />
+    <ShellContent
+        Title="Nuevo paciente"
+        ContentTemplate="{DataTemplate v:Paciente}"
+        Route="Paciente" />
+
+
+
+</Shell>

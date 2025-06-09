@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AppNet.Views.ListadoPaciente"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mo="clr-namespace:AppNet.Models"
+    xmlns:te="clr-namespace:AppNet.Views.Templates"
+    xmlns:vm="clr-namespace:AppNet.ViewModels"
+    Title="Listado de pacientes"
+    x:DataType="vm:PacienteViewModels">
+    <Grid RowDefinitions="100,*,50">
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <ImageButton
+                Padding="0,10,0,0"
+                Command="{Binding ListarPacientesCommand}"
+                IsVisible="{Binding IsReady}"
+                Source="list.png" />
+            <ImageButtonc:\users\home\onedrive\documents\4b\net\appnet\appnet\appshell.xaml.cs
+c:\users\home\onedrive\documents\4b\net\appnet\appnet\appshell.xaml
+
+                Padding="0,10,0,0"
+                Command="{Binding AddNewCommand}"
+                Source="addnew.png" />
+        </HorizontalStackLayout>
+        <Frame
+            Grid.Row="1"
+            Margin="10"
+            Background="{StaticResource Gray100}"
+            HorizontalOptions="Center">
+            <RefreshView Command="{Binding ListarPacientesCommand}" IsRefreshing="{Binding IsRefreshing}">
+                <CollectionView
+                    x:Name="collectionView"
+                    BindingContext="{Binding Pacientes}"
+                    ItemsSource="{Binding}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <te:ItemsPacientes />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Label BackgroundColor="Azure" Text="Sin datos para mostrar" />
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </RefreshView>
+        </Frame>
+
+    </Grid>
+
+
+
+</ContentPage>
