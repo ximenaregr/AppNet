@@ -1,65 +1,123 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="AppNet.Views.Paciente
+    x:Class="AppNet.Views.Paciente"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:AppNet.ViewModels"
-    Title="Paciente"
+    Title="{Binding Id, StringFormat='Paciente - {0}'}"
     x:DataType="vm:PacienteViewModels">
-    <VerticalStackLayout
-        Padding="0,10,0,0"
-        HorizontalOptions="Center"
-        WidthRequest="200">
 
-        <Label
-            Grid.Row="0"
-            Grid.Column="0"
-            Text="Nombre:" />
-        <Entry
-            Grid.Row="1"
-            Grid.Column="0"
-            Text="{Binding Nombre}" />
-        <Label Grid.Row="2" Text="Apellido:" />
-        <Entry Grid.Row="3" Text="{Binding Apellido}" />
-        <CollectionView
-            Grid.Row="4"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Margin="0,10"
-            BackgroundColor="LightCoral"
-            ItemsSource="{Binding Errores}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Label
-                        Padding="5"
-                        LineBreakMode="WordWrap"
-                        MinimumWidthRequest="190"
-                        Text="{Binding .}"
-                        TextColor="White" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="15">
 
-        </CollectionView>
-
-        <VerticalStackLayout HorizontalOptions="Center">
-            <ImageButton
-                Command="{Binding GuardarAlumnoCommand}"
-                IsEnabled="{Binding IsEnabled}"
-                IsVisible="{Binding IsEnabled}"
-                Source="save.png" />
-
-            <ActivityIndicator
-                IsEnabled="{Binding IsBusy}"
-                IsRunning="{Binding IsBusy}"
-                IsVisible="{Binding IsBusy}" />
-
-            <Frame BackgroundColor="Green" IsVisible="{Binding IsVisible}">
-                <Label
-                    FontSize="Title"
-                    HorizontalTextAlignment="Center"
-                    Text="{Binding Resultado}"
-                    TextColor="White" />
+            <!-- Información Personal -->
+            <Frame BackgroundColor="LightBlue" Padding="10">
+                <Label Text="INFORMACIÓN PERSONAL" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center" />
             </Frame>
+
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                <!-- Nombre -->
+                <Label Grid.Row="0" Grid.Column="0" Text="Nombre:" VerticalOptions="Center"/>
+                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Nombre}" Placeholder="Ingrese nombre"/>
+
+                <!-- Apellido -->
+                <Label Grid.Row="1" Grid.Column="0" Text="Apellido:" VerticalOptions="Center"/>
+                <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Apellido}" Placeholder="Ingrese apellido"/>
+
+                <!-- Edad -->
+                <Label Grid.Row="2" Grid.Column="0" Text="Edad (años):" VerticalOptions="Center"/>
+                <Entry Grid.Row="2" Grid.Column="1" Text="{Binding Edad}" Placeholder="0" Keyboard="Numeric"/>
+
+                <!-- Sexo -->
+                <Label Grid.Row="3" Grid.Column="0" Text="Sexo:" VerticalOptions="Center"/>
+                <Picker Grid.Row="3" Grid.Column="1" 
+                        ItemsSource="{Binding OpcionesSexo}" 
+                        SelectedItem="{Binding Sexo}"
+                        Title="Seleccione sexo"/>
+            </Grid>
+
+            <!-- Información Física -->
+            <Frame BackgroundColor="LightGreen" Padding="10">
+                <Label Text="INFORMACIÓN FÍSICA" 
+                       FontSize="18" 
+                       FontAttributes="Bold" 
+                       HorizontalOptions="Center" />
+            </Frame>
+
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                <!-- Peso -->
+                <Label Grid.Row="0" Grid.Column="0" Text="Peso (kg):" VerticalOptions="Center"/>
+                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding Peso}" Placeholder="0.0" Keyboard="Numeric"/>
+
+                <!-- Estatura -->
+                <Label Grid.Row="1" Grid.Column="0" Text="Estatura (cm):" VerticalOptions="Center"/>
+                <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Estatura}" Placeholder="0.0" Keyboard="Numeric"/>
+
+                <!-- Nivel de Actividad -->
+                <Label Grid.Row="2" Grid.Column="0" Text="Nivel Actividad:" VerticalOptions="Center"/>
+                <Picker Grid.Row="2" Grid.Column="1" 
+                        ItemsSource="{Binding OpcionesActividad}" 
+                        SelectedItem="{Binding NivelActividad}"
+                        ItemDisplayBinding="{Binding Descripcion}"
+                        Title="Seleccione nivel"/>
+            </Grid>
+
+            <!-- Errores -->
+            <CollectionView
+                ItemsSource="{Binding Errores}"
+                IsVisible="{Binding Errores.Count, Converter={StaticResource IntToBoolConverter}}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid BackgroundColor="LightCoral" Padding="10" Margin="2">
+                            <Label Text="{Binding .}" TextColor="White" FontSize="12"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Botones -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="Guardar"
+                        Command="{Binding GuardarPacienteCommand}"
+                        IsEnabled="{Binding IsEnabled}"
+                        BackgroundColor="Green"
+                        TextColor="White" />
+
+                <Button Grid.Column="1"
+                        Text="Limpiar"
+                        Command="{Binding LimpiarFormularioCommand}"
+                        BackgroundColor="Orange"
+                        TextColor="White" />
+
+                <Button Grid.Column="2"
+                        Text="Cancelar"
+                        Clicked="OnCancelarClicked"
+                        BackgroundColor="Red"
+                        TextColor="White" />
+            </Grid>
+
+            <!-- Indicador de carga -->
+            <ActivityIndicator
+                IsVisible="{Binding IsBusy}"
+                IsRunning="{Binding IsBusy}"
+                Color="Blue" />
+
+            <!-- Resultado -->
+            <Frame BackgroundColor="Green" 
+                   IsVisible="{Binding IsVisible}"
+                   Padding="10">
+                <Label Text="{Binding Resultado}"
+                       TextColor="White"
+                       FontSize="16"
+                       HorizontalTextAlignment="Center" />
+            </Frame>
+
         </VerticalStackLayout>
-    </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
