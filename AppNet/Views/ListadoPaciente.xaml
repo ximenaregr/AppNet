@@ -6,46 +6,117 @@
     xmlns:mo="clr-namespace:AppNet.Models"
     xmlns:te="clr-namespace:AppNet.Views.Templates"
     xmlns:vm="clr-namespace:AppNet.ViewModels"
-    Title="Listado de pacientes"
-    x:DataType="vm:PacienteViewModels">
-    <Grid RowDefinitions="100,*,50">
-        <HorizontalStackLayout HorizontalOptions="Center">
-            <ImageButton
-                Padding="0,10,0,0"
-                Command="{Binding ListarPacientesCommand}"
-                IsVisible="{Binding IsReady}"
-                Source="list.png" />
-            <ImageButtonc:\users\home\onedrive\documents\4b\net\appnet\appnet\appshell.xaml.cs
-c:\users\home\onedrive\documents\4b\net\appnet\appnet\appshell.xaml
+    Title="Listado de Pacientes"
+    x:DataType="vm:PacientesViewModel">
 
-                Padding="0,10,0,0"
-                Command="{Binding AddNewCommand}"
-                Source="addnew.png" />
-        </HorizontalStackLayout>
-        <Frame
-            Grid.Row="1"
-            Margin="10"
-            Background="{StaticResource Gray100}"
-            HorizontalOptions="Center">
-            <RefreshView Command="{Binding ListarPacientesCommand}" IsRefreshing="{Binding IsRefreshing}">
-                <CollectionView
-                    x:Name="collectionView"
-                    BindingContext="{Binding Pacientes}"
-                    ItemsSource="{Binding}">
+    <Grid RowDefinitions="Auto,*,Auto" Padding="10" RowSpacing="10">
+
+        <!-- Header con botones -->
+        <Frame Grid.Row="0" BackgroundColor="LightBlue" Padding="15">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="15">
+                <Label Grid.Column="0" 
+                       Text="Gestión de Pacientes" 
+                       FontSize="20" 
+                       FontAttributes="Bold" 
+                       VerticalOptions="Center"
+                       TextColor="White" />
+
+                <Button Grid.Column="1"
+                        Text="Actualizar"
+                        Command="{Binding ListarPacientesCommand}"
+                        IsEnabled="{Binding IsReady}"
+                        BackgroundColor="DodgerBlue"
+                        TextColor="White"
+                        CornerRadius="20"
+                        Padding="15,8" />
+
+                <Button Grid.Column="2"
+                        Text="+ Nuevo"
+                        Command="{Binding AgregarNuevoCommand}"
+                        BackgroundColor="Green"
+                        TextColor="White"
+                        CornerRadius="20"
+                        Padding="15,8" />
+            </Grid>
+        </Frame>
+
+        <!-- Lista de pacientes -->
+        <Frame Grid.Row="1" BackgroundColor="White" HasShadow="True">
+            <RefreshView Command="{Binding ListarPacientesCommand}" 
+                        IsRefreshing="{Binding IsRefreshing}">
+                <CollectionView ItemsSource="{Binding Pacientes}"
+                               BackgroundColor="Transparent">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="mo:Paciente2">
                             <te:ItemsPacientes />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.EmptyView>
-                        <Label BackgroundColor="Azure" Text="Sin datos para mostrar" />
+                        <Grid Padding="50">
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Label Text="📋" FontSize="60" HorizontalOptions="Center" />
+                                <Label Text="No hay pacientes registrados" 
+                                       FontSize="18" 
+                                       TextColor="Gray"
+                                       HorizontalOptions="Center" />
+                                <Label Text="Presiona '+ Nuevo' para agregar el primero" 
+                                       FontSize="14" 
+                                       TextColor="LightGray"
+                                       HorizontalOptions="Center" />
+                            </StackLayout>
+                        </Grid>
                     </CollectionView.EmptyView>
                 </CollectionView>
             </RefreshView>
         </Frame>
 
+        <!-- Footer con estadísticas -->
+        <Frame Grid.Row="2" BackgroundColor="LightGray" Padding="15">
+            <Grid ColumnDefinitions="*,*,*">
+                <StackLayout Grid.Column="0" HorizontalOptions="Center">
+                    <Label Text="{Binding Pacientes.Count}" 
+                           FontSize="20" 
+                           FontAttributes="Bold" 
+                           HorizontalOptions="Center" />
+                    <Label Text="Total Pacientes" 
+                           FontSize="12" 
+                           TextColor="Gray"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="1" HorizontalOptions="Center">
+                    <Label Text="{Binding IsLoading}" 
+                           FontSize="20" 
+                           FontAttributes="Bold" 
+                           HorizontalOptions="Center" />
+                    <Label Text="Estado" 
+                           FontSize="12" 
+                           TextColor="Gray"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+
+                <StackLayout Grid.Column="2" HorizontalOptions="Center">
+                    <Label Text="💊" 
+                           FontSize="20" 
+                           HorizontalOptions="Center" />
+                    <Label Text="Salud" 
+                           FontSize="12" 
+                           TextColor="Gray"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+            </Grid>
+        </Frame>
+
+        <!-- Loading indicator -->
+        <Grid Grid.RowSpan="3" 
+              IsVisible="{Binding IsLoading}"
+              BackgroundColor="#80000000">
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                              Color="White"
+                              Scale="2"
+                              HorizontalOptions="Center"
+                              VerticalOptions="Center" />
+        </Grid>
+
     </Grid>
-
-
-
 </ContentPage>

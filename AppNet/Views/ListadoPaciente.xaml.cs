@@ -2,9 +2,9 @@ namespace AppNet.Views;
 
 public partial class ListadoPaciente : ContentPage
 {
-	public ListadoPaciente()
-	{
+    public ListadoPaciente()
+    {
         InitializeComponent();
-        BindingContext =App.Current.Services.GetService<PacienteViewModels>();
-	}
+        BindingContext = App.Current.Services.GetService<PacientesViewModel>();
+    }
 }

@@ -9,8 +9,8 @@
 
     <ShellContent
         Title="Lista de Pacientes"
-        ContentTemplate="{DataTemplate v:ListadoPacientes}"
-        Route="ListadoPacientes" />
+        ContentTemplate="{DataTemplate v:ListadoPaciente}"
+        Route="ListadoPaciente" />
     <ShellContent
         Title="Nuevo Paciente"
         ContentTemplate="{DataTemplate v:Paciente}"

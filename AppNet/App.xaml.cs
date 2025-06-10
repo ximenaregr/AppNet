@@ -29,7 +29,7 @@ namespace AppNet
 
             // Views
             services.AddSingleton<ListadoPaciente>();
-            services.AddSingleton<Models.Paciente>();
+            services.AddSingleton<Views.Paciente>();
 
             return services.BuildServiceProvider();
         }
