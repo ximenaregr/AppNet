@@ -9,4 +9,10 @@ public partial class Paciente : ContentPage
 		BindingContext = App.Current.Services.GetService<PacienteViewModels>();
 		InitializeComponent();
 	}
+
+	private async void OnCancelarClicked(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync("..");
+	}
 }
+
